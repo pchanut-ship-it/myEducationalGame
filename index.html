@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คลัง Prompt สร้างเกม — Prompt Library</title>
+<meta name="description" content="รวม Prompt สำหรับสร้างเกมเว็บและเกมการศึกษาด้วย AI — คัดลอกใช้ได้ทันที">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">✨</div>
+      <div>
+        <div class="brand-title">Prompt Library</div>
+        <div class="brand-sub">คลัง Prompt สร้างเกมด้วย AI</div>
+      </div>
+    </div>
+    <div class="stats">
+      <span id="count-badge">24 Prompts</span>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>ต้นแบบเกมประเภทต่าง ๆ</h1>
+    <p class="lead">รวม Prompt สำเร็จรูปสำหรับสร้างเกมเว็บและเกมเพื่อการศึกษาด้วย AI (Gemini, ChatGPT, Claude) — คัดลอกแล้วนำไปใช้ได้ทันที</p>
+    <div class="search-row">
+      <div class="search-box">
+        <span class="search-icon">🔎</span>
+        <input type="search" id="search" placeholder="ค้นหา Prompt ตามชื่อเกม หมวดหมู่ หรือคำสำคัญ…" autocomplete="off">
+      </div>
+      <div class="filter-chips" id="filter-chips">
+        <button class="chip active" data-filter="all">ทั้งหมด</button>
+        <button class="chip" data-filter="action">Action</button>
+        <button class="chip" data-filter="puzzle">Puzzle</button>
+        <button class="chip" data-filter="arcade">Arcade</button>
+        <button class="chip" data-filter="rpg">RPG</button>
+        <button class="chip" data-filter="3d">เพื่อการศึกษา / 3D</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>
+    <div class="empty-emoji">🫥</div>
+    <div>ไม่พบ Prompt ที่ตรงกับคำค้นหา</div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>สร้างจาก <a href="https://docs.google.com/document/d/12Fc8T_50TTtaPEkr7mPF4SaT3VFHJAy2N5imUmhIoig/edit" target="_blank" rel="noopener">เอกสารต้นฉบับ</a></div>
+    <div class="muted">คลิกปุ่มคัดลอกเพื่อนำ Prompt ไปใช้ใน Gemini, ChatGPT หรือ Claude</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span class="toast-text">คัดลอกแล้ว</span>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card">
+    <button class="modal-close" data-close aria-label="ปิด">✕</button>
+    <div class="modal-head">
+      <div class="modal-emoji" id="m-emoji">🎮</div>
+      <div>
+        <div class="modal-cat" id="m-cat"></div>
+        <h2 id="m-title"></h2>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="m-copy">
+        <span class="btn-icon">📋</span> คัดลอก Prompt
+      </button>
+      <a class="btn btn-ghost" id="m-demo" href="#" target="_blank" rel="noopener" hidden>
+        <span class="btn-icon">▶</span> ดูตัวอย่างเกม
+      </a>
+    </div>
+    <pre class="modal-prompt" id="m-prompt"></pre>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  var scrollRaf=0;
+  function emitScroll(){
+    scrollRaf=0;
+    var x=window.scrollX||window.pageXOffset||0;
+    var y=window.scrollY||window.pageYOffset||0;
+    window.parent.postMessage({type:'INLINE_EDIT_SCROLL',scrollX:x,scrollY:y},'*');
+  }
+  window.addEventListener('scroll',function(){
+    if(scrollRaf)return;
+    scrollRaf=requestAnimationFrame(emitScroll);
+  },{passive:true,capture:true});
+  emitScroll();
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
